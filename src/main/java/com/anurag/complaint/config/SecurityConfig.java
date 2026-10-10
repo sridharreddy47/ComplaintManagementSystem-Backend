@@ -27,20 +27,16 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+                    "/",
                     "/users/register",
                     "/users/login"
                 ).permitAll()
-
                 .requestMatchers("/complaints/**").authenticated()
-
                 .anyRequest().authenticated()
             )
-
             .addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class
@@ -51,32 +47,20 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-            List.of(
-                "http://localhost:5173",
-                "https://complaint-frontend-i1t6.onrender.com"
-            )
-        );
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173",
+            "https://complaint-frontend-i1t6.onrender.com"
+        ));
 
-        configuration.setAllowedMethods(
-            List.of(
-                "GET",
-                "POST",
-                "PUT",
-                "DELETE",
-                "OPTIONS"
-            )
-        );
+        configuration.setAllowedMethods(List.of(
+            "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
 
-        configuration.setAllowedHeaders(
-            List.of(
-                "Authorization",
-                "Content-Type"
-            )
-        );
+        configuration.setAllowedHeaders(List.of(
+            "Authorization", "Content-Type"
+        ));
 
         configuration.setAllowCredentials(true);
 
@@ -88,3 +72,4 @@ public class SecurityConfig {
         return source;
     }
 }
+
